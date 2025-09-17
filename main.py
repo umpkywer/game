@@ -98,8 +98,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 타이머와 클릭 횟수 표시
-st.markdown(f'<div class="timer">남은 시간: {st.session_state.잔여시간}초</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="counter">현재 횟수: {st.session_state.cnt}</div>', unsafe_allow_html=True)
+timer_display = st.empty()  # 타이머를 실시간으로 갱신할 공간 생성
+counter_display = st.empty()  # 클릭 횟수를 실시간으로 갱신할 공간 생성
 
 # 타이머 종료 후 최종 결과 표시
 if st.session_state.timer_over:
@@ -121,6 +121,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # 타이머 상태 업데이트
 if st.session_state.running:
-    update_timer()
-    time.sleep(1)  # 매 초마다 타이머 갱신
-    st.experimental_rerun()  # 화면을 다시 렌더링하여 타이머를 계속 갱신
+    while st.session_state.running:
+        update_timer()
+        timer_display.markdown(f'<div class="timer">남은 시간: {st.session_state.잔여시간}초</div>', unsafe_allow_html=True)
+        counter_display.markdown(f'<div class="counter">현재 횟수: {st.session_state.cnt}</div>', unsafe_allow_html=True)
+        time.sleep(1)  # 1초마다 갱신
+        if st.session_state.timer_over:
+            break  # 타이머가 종료되면 종료
