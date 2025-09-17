@@ -122,3 +122,5 @@ st.markdown('</div>', unsafe_allow_html=True)
 # 타이머 상태 업데이트
 if st.session_state.running:
     update_timer()
+    time.sleep(1)  # 매 초마다 타이머 갱신
+    st.experimental_rerun()  # 화면을 다시 렌더링하여 타이머를 계속 갱신
