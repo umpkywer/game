@@ -15,7 +15,6 @@ def start_timer():
     st.session_state.running = True
     st.session_state.start_time = time.time()  # 시작 시간을 기록
     st.session_state.timer_over = False  # 타이머가 종료되지 않았음을 표시
-    st.experimental_rerun()
 
 def update_timer():
     # 타이머 업데이트
@@ -28,19 +27,16 @@ def update_timer():
     if remaining_time <= 0:
         st.session_state.running = False
         st.session_state.timer_over = True
-        st.experimental_rerun()
 
 def click():
     if st.session_state.running:
         st.session_state.cnt += 1
-        st.experimental_rerun()
 
 def reset():
     st.session_state.cnt = 0
     st.session_state.timer_over = False
     st.session_state.running = False
     st.session_state.잔여시간 = 0
-    st.experimental_rerun()
 
 # UI 구성
 st.title('주어진 시간동안 최대한 많이 클릭하세요!')
