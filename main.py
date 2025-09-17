@@ -6,18 +6,20 @@ if '잔여시간' not in st.session_state:
     st.session_state.잔여시간 = 0
     st.session_state.cnt = 0
     st.session_state.running = False
+    st.session_state.start_time = None
+    st.session_state.timer_over = False
 
 def start_timer():
     st.session_state.잔여시간 = 5  # 5초로 타이머 설정
     st.session_state.cnt = 0
     st.session_state.running = True
-    st.session_state.timer_job = time.time()  # 시작 시간을 기록
+    st.session_state.start_time = time.time()  # 시작 시간을 기록
     st.session_state.timer_over = False  # 타이머가 종료되지 않았음을 표시
     st.experimental_rerun()
 
 def update_timer():
     # 타이머 업데이트
-    elapsed_time = time.time() - st.session_state.timer_job
+    elapsed_time = time.time() - st.session_state.start_time
     remaining_time = max(0, 5 - int(elapsed_time))  # 5초에서 경과 시간 뺀 값
 
     st.session_state.잔여시간 = remaining_time
@@ -36,11 +38,9 @@ def click():
 def reset():
     st.session_state.cnt = 0
     st.session_state.timer_over = False
+    st.session_state.running = False
+    st.session_state.잔여시간 = 0
     st.experimental_rerun()
-
-# 타이머 업데이트 (주기적으로 실행)
-if st.session_state.running:
-    update_timer()
 
 # UI 구성
 st.title('주어진 시간동안 최대한 많이 클릭하세요!')
@@ -61,3 +61,7 @@ if st.session_state.running:
     st.button('Button', on_click=click)
 else:
     st.button('Start Timer', on_click=start_timer)
+
+# 타이머 상태 업데이트
+if st.session_state.running:
+    update_timer()
